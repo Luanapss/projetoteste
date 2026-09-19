@@ -4,7 +4,7 @@ from utils import carregar_dados, calcular_media_geral, calcular_total_por_categ
 
 def test_calcular_media_geral():
     df = pd.DataFrame({"valor": [10, 20, 30]})
-    assert calcular_media_geral(df) == 555
+    assert calcular_media_geral(df) == 20
 
 
 def test_calcular_media_geral_com_um_valor():
