@@ -1,0 +1,25 @@
+name: Alertas
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types:
+      - completed
+
+jobs:
+  notificar-falha:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Criar issue de alerta
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Falha no CI - execução ${context.payload.workflow_run.id}`,
+              body: `O workflow de CI falhou. Veja os detalhes em: ${context.payload.workflow_run.html_url}`
+            })
